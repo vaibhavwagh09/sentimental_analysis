@@ -1,0 +1,76 @@
+{% extends 'form.html' %}
+
+{% set active_page = "scatter" %}
+
+{% block title %} Scatter {% endblock title %}
+
+{% block body %}
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<div class="container">
+    <div class="card">
+        <div class="box">
+            <div class="content">
+                <canvas id="myChart" width="600" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // setup 
+    const data = {
+        datasets: [
+            {
+                label: 'Positive',
+                data: {{ positive| safe}},
+    borderColor: 'red',
+        backgroundColor: 'red',
+            },
+    {
+        label: 'Negative',
+            data: {{ negative | safe }},
+        borderColor: 'cyan',
+            backgroundColor: 'cyan',
+            },
+    {
+        label: 'Neutral',
+            data: {{ neutral | safe }},
+        borderColor: 'green',
+            backgroundColor: 'green',
+            },
+            
+        ]
+        };
+
+    // config
+    const config = {
+        type: 'scatter',
+        data: data,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Scatter Chart'
+                }
+            }
+        },
+    };
+
+    // render init block
+    const myChart = new Chart(
+        document.getElementById('myChart'),
+        config
+    );
+</script>
+
+{% endblock body %}

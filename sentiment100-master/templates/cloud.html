@@ -1,0 +1,60 @@
+{% extends 'form.html' %}
+
+{% set active_page = "cloud" %}
+
+{% block title %} Word {% endblock title %}
+
+{% block body %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<div class="container">
+    <div class="card">
+        <div class="box">
+            <div class="content">
+                <div id="container" style="width:400px; height:400px"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-core.min.js"></script>
+<script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-tag-cloud.min.js"></script>
+<script>
+    anychart.onDocumentReady(function () {
+
+        // create data   
+        var data = {{ data | safe
+    }};
+
+    // create a chart and set the data
+    var chart = anychart.tagCloud(data);
+
+    // set the chart title
+    chart.title("Tag Cloud Chart: Basic Sample");
+
+    // set the container id
+    chart.container("container");
+
+    // // configure angles
+    // chart.fromAngle(10);
+    // chart.toAngle(100);
+    // chart.anglesCount(5);
+
+    chart.angles([0])
+
+    // set the mode of the tag cloud
+    chart.mode("spiral");
+
+
+    // initiate drawing the chart
+    chart.draw();
+});
+</script>
+
+{% endblock body %}

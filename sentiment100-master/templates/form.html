@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analyzer</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!--SideBar Starts-->
+    <div class="sidebar">
+        <img class="logo" src="{{url_for('static', filename='src/Sentiment_1.png')}}">
+
+        <div class="siderbarOption">
+            <span class="material-icons">home</span>
+            <a href="/">
+                <h2>Home</h2>
+            </a>
+        </div>
+
+        <div class="siderbarOption {{ 'active' if active_page == 'pie' else '' }}">
+            <span class="material-icons">pie_chart</span>
+            <a href="/pie">
+                <h2>Pie Chart</h2>
+            </a>
+        </div>
+
+        <div class="siderbarOption {{ 'active' if active_page == 'bar' else '' }}">
+            <span class="material-icons">bar_chart</span>
+            <a href="/bar">
+                <h2>Bar Chart</h2>
+            </a>
+        </div>
+
+        <div class="siderbarOption {{ 'active' if active_page == 'line' else '' }}">
+            <span class="material-icons">stacked_line_chart</span>
+            <a href="/line">
+                <h2>Line Chart</h2>
+            </a>
+        </div>
+
+        <div class="siderbarOption {{ 'active' if active_page == 'donut' else '' }}">
+            <span class="material-icons">donut_large</span>
+            <a href="/donut">
+                <h2>Donut Chart</h2>
+            </a>
+        </div>
+
+        <div class="siderbarOption {{ 'active' if active_page == 'scatter' else '' }}">
+            <span class="material-icons">scatter_plot</span>
+            <a href="/scatter">
+                <h2>Plot</h2>
+            </a>
+        </div>
+
+        <div class="siderbarOption {{ 'active' if active_page == 'stacked' else '' }}">
+            <span class="material-icons">reorder</span>
+            <a href="/stacked">
+                <h2>Stacked</h2>
+            </a>
+        </div>
+
+        <div class="siderbarOption {{ 'active' if active_page == 'timeline' else '' }}">
+            <span class="material-icons">timeline</span>
+            <a href="/live-chart">
+                <h2>Live Chart</h2>
+            </a>
+        </div>
+
+        <div class="siderbarOption {{ 'active' if active_page == 'cloud' else '' }}">
+            <span class="material-icons">filter_drama</span>
+            <a href="/cloud/1">
+                <h2>WordCloud</h2>
+            </a>
+        </div>
+
+        <div class="siderbarOption {{ 'active' if active_page == 'table' else '' }}">
+            <span class="material-icons">table_chart</span>
+            <a href="/table">
+                <h2>Tweets</h2>
+            </a>
+        </div>
+    </div>
+    <!--SideBar Ends-->
+
+    <!--Feed Start-->
+    <div class="feed">
+        <div class="feed__header">
+            <h2>{% block title %} Home {% endblock title %}</h2>
+            <div><p>Keyword:  &nbsp;<h2>{{keyword}}</h2></p></div>
+
+        </div>
+
+        <div class="feed__output">
+            {% block body %}
+
+            <div class="head__0">
+                <h1 class="head__1">Sentiment <br> Analyzer</h1>
+                <h4 class="head__2"> Use sentiment analysis to quickly detect emotions of Tweets.</h4>
+            </div>
+
+            <div class="head__body__0">
+                <div class="head__body">
+                    <p>Sentiment Analysis Benefits :</p>
+                </div>
+
+                <div class="head__body_cards">
+                    <div class="head__body_card_1">
+                        Quickly detect negative comments &amp;
+                        respond instantly
+                    </div>
+                    <div class="head__body_card_1">
+                        Improve response times to urgent queries by
+                        65%
+                    </div>
+                    <div class="head__body_card_1">
+                        Monitor sentiment about your brand, product, or service in real time
+                    </div>
+                </div>
+            </div>
+
+
+            {% endblock body %}
+        </div>
+
+    </div>
+    <!--Feed Ends-->
+
+    <!--Widget Starts-->
+
+    <div class=" widgets">
+        <form action="/" method="POST">
+            <div class="widgets__input">
+                <span class="material-icons widgets__searchIcon">search</span>
+                <input type="text" name="key" id="key" placeholder="Search Tweet" required>
+            </div>
+
+            <div class="widgets__input">
+                <span class="material-icons widgets__dateIcon">date_range</span>
+                <input type="text" name="date_since" id="date_since" placeholder="From Date..(YYYY/MM/DD)" required>
+            </div>
+
+            <div class="widgets__input">
+                <input type="submit" id="search_tweet" value="Submit">
+            </div>
+        </form>
+
+        <div class="trends-for-you">
+
+            <div class="trends-for-you__block">
+                <div class="trends-for-you__heading">
+                    Search Text..
+                </div>
+            </div>
+
+            <form action="/form" method="POST">
+
+                <div class="widgets__input__text">
+                    <input class="widgets__input__text__1" type="text" name="input" id="input"
+                        placeholder="Search Text Here...">
+                </div>
+
+            </form>
+
+            <div class="trends-for-you__block"></div>
+
+            <div class="trends-for-you__block">
+                <div class="trends-for-you__meta-information">
+                    Positive
+                </div>
+                <div class="trends-for-you__trend-name">
+                    Score : <span class="pos_score">{{positive_score}}</span>
+                </div>
+            </div>
+
+            <div class="trends-for-you__block">
+                <div class="trends-for-you__meta-information">
+                    Negative
+                </div>
+                <div class="trends-for-you__trend-name">
+                    Score : <span class="neg_score">{{negative_score}}</span>
+                </div>
+            </div>
+
+            <div class="trends-for-you__block">
+                <div class="trends-for-you__meta-information">
+                    Neutral
+                </div>
+                <div class="trends-for-you__trend-name">
+                    Score : <span>{{neutral_score}}</span>
+                </div>
+            </div>
+
+            <div class="trends-for-you__block">
+                <div class="trends-for-you__trend-name">
+                    The Result is : <span>{{data_sen}}</span>
+                </div>
+            </div>
+
+            <div class="trends-for-you__block">
+                <div class="trends-for-you__trend-name">
+                    The Text is : {{word}}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--Widget Ends-->
+
+</body>
+
+</html>

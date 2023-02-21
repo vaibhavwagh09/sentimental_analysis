@@ -1,0 +1,76 @@
+{% extends 'form.html' %}
+
+{% set active_page = "timeline" %}
+
+{% block title %} Live Chart {% endblock title %}
+
+{% block body %}
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+</head>
+
+<div class="container">
+    <div class="card">
+        <div class="box">
+            <div class="content">
+                <canvas id="lineChart" width="600" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var ctx = document.getElementById('lineChart').getContext('2d');
+    var lineCart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{ labels[-100: -1] | safe}},
+    datasets: [
+        {
+            label: 'Data Points',
+            data: {{ values[-100: -1] | safe}},
+    fill: false,
+        borderColor: "rgb(75, 192, 192)",
+            ineTenstion: 0.1
+                      }
+                  ]
+              },
+    options: {
+        responsive: true
+    }
+          });
+
+    var interval = setInterval(update_values, 5000);
+
+    function update_values() {
+        fetch('/live-data')
+        .then(data => data.json())
+        .then(point => {
+            if (point != "0") {
+                lineCart.data.labels.push(point['TimeStamp'])
+                lineCart.data.datasets.forEach(dataset => {
+                    dataset.data.push(point['Score'])
+                });
+                lineCart.update();
+                console.log('updated')
+            }
+            else if (point == '1') {
+                console.log("limit reached");
+                clearInterval(interval);
+            }
+            else {
+                console.log('Same data found')
+            }
+        })
+    }
+
+</script>
+
+{% endblock body %}
